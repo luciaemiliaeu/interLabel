@@ -25,13 +25,13 @@ class LABELROTULATOR(object):
 		
 		self.rotulos = rotulador.Rotulador(self.X, self.Y, discre_method, discre_bins, perc_trei_rot, V, folds_rot).rotulo
 		for i in self.rotulos: print(i)
-		self.dados, self.notDados, self.rongData,  self.rongcluster, self.cluster = self.selectData()
+		self.dados, self.notDados, self.wrongData,  self.rongcluster, self.cluster = self.selectData()
 
 	def selectData(self):
 		rightData=[]
 		notData=[]
-		rongData=[]
-		rongcluster = []
+		wrongData=[]
+		wrongcluster = []
 
 		data = pd.DataFrame(self.X)
 		data.loc[:,'Cluster'] = pd.Series(self.Y, index=data.index)
@@ -44,13 +44,13 @@ class LABELROTULATOR(object):
 						if rotulo[0] == n_cluster: 
 							rightData.append(dado)
 						else:
-							rongData.append(dado)
-							rongcluster.append((dado,rotulo[0]))
+							wrongData.append(dado)
+							wrongcluster.append((dado,rotulo[0]))
 					else:
 						if rotulo[0] == n_cluster: notData.append(dado)
 		
 		cluster = [i[-1] for i in rightData]
-		return np.asarray(rightData), np.asarray(notData), np.asarray(rongData), rongcluster, np.asarray(cluster)
+		return np.asarray(rightData), np.asarray(notData), np.asarray(wrongData), wrongcluster, np.asarray(cluster)
 	
 	def check(self, dado, rotulos):
 		#print(dado, rotulos) 
@@ -60,7 +60,8 @@ class LABELROTULATOR(object):
 			else: 
 				return False
 		return True 
-		
+	
+	#def change
 
 
 

@@ -20,19 +20,19 @@ rotular = label.LABELROTULATOR(bd, chamadas[1], chamadas[2], chamadas[3], 60, ch
 "./databases/iris.csv","EFD", 4, [3,3,3,3], 10"
 ("./databases/vidros.csv","EWD",7, [4,4,4,4,4,4,4,4,4],15),
 ("./databases/sementes.csv","EFD",3, [3,3,3,3,3,3,3], 5)'''
-naoObedeceOutrosRotulos = [x for x in rotular.baseagrupada if not procurarElemento(x,rotular.rongData)]
+naoObedeceOutrosRotulos = [x for x in rotular.baseagrupada if not procurarElemento(x,rotular.wrongData)]
 
 print("tamanho da base: "+str(len(rotular.X)))
 print("Rotulados certos: "+str(len(rotular.dados)))
 print("Nao obedecem ao rotulo: "+str(len(rotular.notDados)))
-print("Obedecem a outros rotulos: "+str(len(rotular.rongData)))
+print("Obedecem a outros rotulos: "+str(len(rotular.wrongData)))
 print("Nao obedecem a outros rotulos: "+str(len(naoObedeceOutrosRotulos)))
 
-maisDeUmGrupo = [x for x in rotular.rongData for y in rotular.dados if comparaListas(x,y)]
+maisDeUmGrupo = [x for x in rotular.wrongData for y in rotular.dados if comparaListas(x,y)]
 print("Mais de um grupo: " +str(len(maisDeUmGrupo)))
 #for i in maisDeUmGrupo: print(i)
 
-grupoErrado = [x for x in rotular.notDados for y in rotular.rongData if comparaListas(x,y)]
+grupoErrado = [x for x in rotular.notDados for y in rotular.wrongData if comparaListas(x,y)]
 print("Grupo errado: "+str(len(grupoErrado)))
 for i in grupoErrado: print(i)
 
