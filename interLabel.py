@@ -25,8 +25,15 @@ class LABELROTULATOR(object):
 		
 		self.rotulos = rotulador.Rotulador(self.X, self.Y, discre_method, discre_bins, perc_trei_rot, V, folds_rot).rotulo
 		for i in self.rotulos: print(i)
-		self.dados, self.notDados, self.wrongData,  self.rongcluster, self.cluster = self.selectData()
+		self.dados, self.notDados, self.wrongData,  self.wrongcluster = self.selectData()
 
+		self.naoObedeceOutrosRotulos = [x for x in self.baseagrupada if not self.procurarElemento(x,self.wrongData)]
+		self.maisDeUmGrupo = [x for x in self.wrongData for y in self.dados if self.comparaListas(x,y)]
+		self.grupoErrado = [x for x in self.notDados for y in self.wrongData if self.comparaListas(x,y)]
+		self.exclusivo = [x for x in self.dados for y in self.naoObedeceOutrosRotulos if self.comparaListas(x,y)]
+		self.erro = [x for x in self.notDados for y in self.naoObedeceOutrosRotulos if self.comparaListas(x,y)]
+		self.changeLabel(self.wrongcluster, self.grupoErrado)
+	
 	def selectData(self):
 		rightData=[]
 		notData=[]
@@ -49,8 +56,7 @@ class LABELROTULATOR(object):
 					else:
 						if rotulo[0] == n_cluster: notData.append(dado)
 		
-		cluster = [i[-1] for i in rightData]
-		return np.asarray(rightData), np.asarray(notData), np.asarray(wrongData), wrongcluster, np.asarray(cluster)
+		return np.asarray(rightData), np.asarray(notData), np.asarray(wrongData), wrongcluster
 	
 	def check(self, dado, rotulos):
 		#print(dado, rotulos) 
@@ -61,7 +67,28 @@ class LABELROTULATOR(object):
 				return False
 		return True 
 	
-	#def change
+	def changeLabel(self, dados, grupoErrado):
+		#for i in dados: print(i)
+		#print("\n")
+		#for i in grupoErrado: print(i)
+
+		for y in dados:
+			if self.procurarElemento(y[0], grupoErrado):
+				y[0][-1]=y[1]
+				#print(y[0])
+		
+
+	def comparaListas(self, list1, list2):
+		for i in range(len(list1)):
+			if list1[i]!=list2[i]: return False
+		return True
+
+	def procurarElemento(self, elemento, lista):
+		for i in lista:
+			if self.comparaListas(elemento, i): return True
+		return False
+
+
 
 
 
